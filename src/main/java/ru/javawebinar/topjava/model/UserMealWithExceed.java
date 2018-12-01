@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.model;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * GKislin
@@ -32,5 +33,21 @@ public class UserMealWithExceed {
     @Override
     public String toString() {
         return "{"+ dateTime + ", " + description + ", calories = " + calories + (exceed ? ", exceeded": ", not exceeded") + "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserMealWithExceed)) return false;
+        UserMealWithExceed that = (UserMealWithExceed) o;
+        return calories == that.calories &&
+                exceed == that.exceed &&
+                Objects.equals(dateTime, that.dateTime) &&
+                Objects.equals(description, that.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dateTime, description, calories, exceed);
     }
 }

@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.util;
 import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.topjava.model.UserMeal;
+import ru.javawebinar.topjava.model.UserMealWithExceed;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -18,6 +19,10 @@ public class UserMealsUtilTest {
 
     private List<UserMeal> mealList = null;
     private UserMeal morningMeal = null;
+    private static final UserMealWithExceed EXPECTED_USER_MEAL_WITH_EXCEED_1 = new UserMealWithExceed(
+            LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500,false);
+    private static final UserMealWithExceed EXPECTED_USER_MEAL_WITH_EXCEED_2 = new UserMealWithExceed(
+            LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000,true);
 
     @Before
     public void setUp() throws Exception {
@@ -33,23 +38,19 @@ public class UserMealsUtilTest {
 
     @Test
     public void getFilteredWithExceededTest() {
-        String actual = getFilteredWithExceeded(mealList, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000).toString();
-        String expected = "[{2015-05-30T10:00, Завтрак, calories = 500, not exceeded}, {2015-05-31T10:00, Завтрак, calories = 1000, exceeded}]";
-        assertEquals(expected, actual);
+        UserMealWithExceed actual = getFilteredWithExceeded(mealList, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000).get(0);
+        assertEquals(EXPECTED_USER_MEAL_WITH_EXCEED_1, actual);
         mealList.remove(morningMeal);
-        actual = getFilteredWithExceeded(mealList, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000).toString();
-        expected = "[{2015-05-31T10:00, Завтрак, calories = 1000, exceeded}]";
-        assertEquals(expected, actual);
+        actual = getFilteredWithExceeded(mealList, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000).get(0);
+        assertEquals(EXPECTED_USER_MEAL_WITH_EXCEED_2, actual);
     }
 
     @Test
     public void getFilteredWithExceededStreamTest() {
-        String actual = getFilteredWithExceededStream(mealList, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000).toString();
-        String expected = "[{2015-05-30T10:00, Завтрак, calories = 500, not exceeded}, {2015-05-31T10:00, Завтрак, calories = 1000, exceeded}]";
-        assertEquals(expected, actual);
+        UserMealWithExceed actual = getFilteredWithExceededStream(mealList, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000).get(0);
+        assertEquals(EXPECTED_USER_MEAL_WITH_EXCEED_1, actual);
         mealList.remove(morningMeal);
-        actual = getFilteredWithExceededStream(mealList, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000).toString();
-        expected = "[{2015-05-31T10:00, Завтрак, calories = 1000, exceeded}]";
-        assertEquals(expected, actual);
+        actual = getFilteredWithExceededStream(mealList, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000).get(0);
+        assertEquals(EXPECTED_USER_MEAL_WITH_EXCEED_2, actual);
     }
 }
