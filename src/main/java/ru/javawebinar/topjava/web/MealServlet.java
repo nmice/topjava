@@ -15,6 +15,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  * Date: 19.08.2014
  */
 public class MealServlet extends HttpServlet {
+
     private static final Logger LOG = getLogger(MealServlet.class);
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -22,5 +23,7 @@ public class MealServlet extends HttpServlet {
 
         request.getRequestDispatcher("userList.jsp").forward(request, response);
 //        response.sendRedirect("userList.jsp");
+
+        System.out.println();
     }
 }
