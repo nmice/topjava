@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: HOME
@@ -12,11 +13,9 @@
 <html>
 
 <head>
-
     <title>Meals</title>
 
     <style>
-        <%--no impotrant that its not colored its working normal!!! Styles--%>
         .normal {
             color: green;
         }
@@ -36,20 +35,21 @@
 
     <thead>
     <tr>
+        <th>Дата</th>
         <th>Описание</th>
         <th>Кол-во калорий</th>
     </tr>
     </thead>
 
     <tbody>
-    <c:forEach items="${mealList}" var="meal">
-        <td>${meal.description}</td>
-        <td>${meal.calories}</td>
+    <c:forEach items="${meals}" var="meal">
+        <td class="${meal.exceed ? 'exceeded' : 'normal'}">${meal.date}</td>
+        <td class="${meal.exceed ? 'exceeded' : 'normal'}">${meal.description}</td>
+        <td class="${meal.exceed ? 'exceeded' : 'normal'}">${meal.calories}</td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
-
 
 </body>
 </html>
