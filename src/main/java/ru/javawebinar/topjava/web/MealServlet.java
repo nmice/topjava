@@ -35,7 +35,7 @@ public class MealServlet extends HttpServlet {
                 new MealWithExceed(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510, true)
         );
 
-        request.setAttribute("meals", meals);
+        request.setAttribute("meal", meals);
 
         request.getRequestDispatcher("meals.jsp").forward(request, response);
 //        response.sendRedirect("userList.jsp");
