@@ -15,20 +15,33 @@ import java.util.stream.Collectors;
  * 31.05.2015.
  */
 public class MealsUtil {
-    public static void main(String[] args) {
-        List<Meal> meals = Arrays.asList(
-                new Meal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510)
-        );
-        List<MealWithExceed> filteredMealsWithExceeded = getFilteredWithExceeded(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
-        filteredMealsWithExceeded.forEach(System.out::println);
 
-        System.out.println(getFilteredWithExceededByCycle(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
+    private static final Map<Integer, Meal> mealsBase = new HashMap<>();
+
+    private static List<Meal> meals = new ArrayList<>();
+
+    static {
+        initMealsBase();
     }
+
+    public static void initMealsBase() {
+        meals = Arrays.asList(
+                new Meal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500, 1),
+                new Meal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000, 2),
+                new Meal(LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500, 3),
+                new Meal(LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000, 4),
+                new Meal(LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500, 5),
+                new Meal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510, 6)
+        );
+        for (Meal meal : meals) {
+            mealsBase.put(meal.getId(), meal);
+        }
+    }
+
+
+/*    public static void main(String[] args) {
+
+    }*/
 
     public static List<MealWithExceed> getFilteredWithExceeded(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
@@ -58,6 +71,37 @@ public class MealsUtil {
     }
 
     public static MealWithExceed createWithExceed(Meal meal, boolean exceeded) {
-        return new MealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(), exceeded);
+        return new MealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(), meal.getId(), exceeded);
+    }
+
+    public static void addMeal(Meal meal) {
+        mealsBase.put(meal.getId(), meal);
+    }
+
+    public static Meal getMealById(int id) {
+        return mealsBase.get(id);
+    }
+
+    public static List<Meal> getAllMeals() {
+        Collection<Meal> c = mealsBase.values();
+        List<Meal> allMealsList = new ArrayList<>();
+        allMealsList.addAll(c);
+        return allMealsList;
+    }
+
+    public static void updateMeal(Meal meal) {
+        addMeal(meal);
+    }
+
+    public static void deleteMeal(int id) {
+        mealsBase.remove(id);
+    }
+
+    public static int getMealsBaseSize() {
+        return mealsBase.size();
+    }
+
+    public static int getNewId() {
+        return getMealsBaseSize() + 1;
     }
 }
