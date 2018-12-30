@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  */
 public class MealsUtil {
 
-    private static final Map<Integer, Meal> mealsBase = new HashMap<>();
+    private static final Map<Integer, Meal> MEALS_BASE = new HashMap<>();
 
     private static List<Meal> meals = new ArrayList<>();
 
@@ -34,7 +34,7 @@ public class MealsUtil {
                 new Meal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510, 6)
         );
         for (Meal meal : meals) {
-            mealsBase.put(meal.getId(), meal);
+            MEALS_BASE.put(meal.getId(), meal);
         }
     }
 
@@ -43,7 +43,7 @@ public class MealsUtil {
 
     }*/
 
-    public static List<MealWithExceed> getFilteredWithExceeded(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+    public static List<MealWithExceed> getFilteredWithExceededByStream(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
                 .collect(
                         Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))
@@ -56,7 +56,7 @@ public class MealsUtil {
                 .collect(Collectors.toList());
     }
 
-    public static List<MealWithExceed> getFilteredWithExceededByCycle(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+    public static List<MealWithExceed> getFilteredWithExceeded(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
 
         final Map<LocalDate, Integer> caloriesSumByDate = new HashMap<>();
         meals.forEach(meal -> caloriesSumByDate.merge(meal.getDate(), meal.getCalories(), Integer::sum));
@@ -75,15 +75,15 @@ public class MealsUtil {
     }
 
     public static void addMeal(Meal meal) {
-        mealsBase.put(meal.getId(), meal);
+        MEALS_BASE.put(meal.getId(), meal);
     }
 
     public static Meal getMealById(int id) {
-        return mealsBase.get(id);
+        return MEALS_BASE.get(id);
     }
 
     public static List<Meal> getAllMeals() {
-        Collection<Meal> c = mealsBase.values();
+        Collection<Meal> c = MEALS_BASE.values();
         List<Meal> allMealsList = new ArrayList<>();
         allMealsList.addAll(c);
         return allMealsList;
@@ -94,11 +94,11 @@ public class MealsUtil {
     }
 
     public static void deleteMeal(int id) {
-        mealsBase.remove(id);
+        MEALS_BASE.remove(id);
     }
 
     public static int getMealsBaseSize() {
-        return mealsBase.size();
+        return MEALS_BASE.size();
     }
 
     public static int getNewId() {

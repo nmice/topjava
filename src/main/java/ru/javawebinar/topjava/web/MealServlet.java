@@ -92,7 +92,7 @@ public class MealServlet extends HttpServlet {
         }
         else if (action.equalsIgnoreCase("listMeals")) {
             List<MealWithExceed> mealsWithExceeded = MealsUtil.getFilteredWithExceeded(MealsUtil.getAllMeals(),
-                    LocalTime.of(0, 0), LocalTime.of(23, 0), 2000);
+                    LocalTime.of(0, 0), LocalTime.of(23, 59), 2000);
             request.setAttribute("meals", mealsWithExceeded);
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
         }
