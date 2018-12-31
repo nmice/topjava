@@ -48,8 +48,8 @@
         <td class="${meal.exceed ? 'exceeded' : 'normal'}">${meal.date}</td>
         <td class="${meal.exceed ? 'exceeded' : 'normal'}">${meal.description}</td>
         <td class="${meal.exceed ? 'exceeded' : 'normal'}">${meal.calories}</td>
-        <td class="${meal.exceed ? 'exceeded' : 'normal'}"><a href="meals?action=edit&userid=<c:out value="${meal.id}"/>">Update</a></td>
-        <td class="${meal.exceed ? 'exceeded' : 'normal'}"><a href="meals?action=delete&userid=<c:out value="${meal.id}"/>">Delete</a></td>
+        <td class="${meal.exceed ? 'exceeded' : 'normal'}"><a href="meals?action=edit&id=<c:out value="${meal.id}"/>">Update</a></td>
+        <td class="${meal.exceed ? 'exceeded' : 'normal'}"><a href="meals?action=delete&id=<c:out value="${meal.id}"/>">Delete</a></td>
         </tr>
     </c:forEach>
     </tbody>

@@ -79,15 +79,15 @@ public class MealServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         if (action.equalsIgnoreCase("delete")) {
-            int userId = Integer.parseInt(request.getParameter("userid"));
-            MealsUtil.deleteMeal(userId);
+            int id = Integer.parseInt(request.getParameter("id"));
+            MealsUtil.deleteMeal(id);
             List<MealWithExceed> mealsWithExceeded = MealsUtil.getFilteredWithExceeded(MealsUtil.getAllMeals(), LocalTime.of(0, 0),
                     LocalTime.of(23, 59), 2000);
             request.setAttribute("meals", mealsWithExceeded);
         } else if (action.equalsIgnoreCase("edit")) {
-            int userId = Integer.parseInt(request.getParameter("userid"));
+            int id = Integer.parseInt(request.getParameter("id"));
 
-            Meal meal = MealsUtil.getMealById(userId);
+            Meal meal = MealsUtil.getMealById(id);
             request.setAttribute("meal", meal);
         }
         else if (action.equalsIgnoreCase("listMeals")) {
