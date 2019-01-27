@@ -1,36 +1,36 @@
 package ru.javawebinar.topjava.Dao;
 
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.util.MealsUtil;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class MealDaoImpl implements MealDao<Meal> {
 
+
     @Override
-    public Optional<Meal> get(long id) {
-        return Optional.empty();
+    public void add(Meal meal) {
+        MealsUtil.mealsMap.put(getAll().size() + 1, meal);
+    }
+
+    @Override
+    public Meal getById(int id) {
+        return MealsUtil.mealsMap.get(id);
     }
 
     @Override
     public List<Meal> getAll() {
-        return null;
+        return new ArrayList<>(MealsUtil.mealsMap.values());
     }
 
     @Override
-    public void save(Meal meal) {
-
+    public void update(Meal meal) {
+        MealsUtil.mealsMap.put(meal.getId(), meal);
     }
 
     @Override
-    public void update(Meal meal, String[] params) {
-
+    public void delete(int id) {
+        MealsUtil.mealsMap.remove(id);
     }
-
-    @Override
-    public void delete(Meal meal) {
-    }
-
 }
