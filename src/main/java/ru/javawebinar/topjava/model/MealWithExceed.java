@@ -12,9 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class MealWithExceed {
 
-    private final static AtomicInteger ID = new AtomicInteger(-1);
-
-    private final int id;
+    private final String id;
 
     private final LocalDateTime dateTime;
 
@@ -24,19 +22,15 @@ public class MealWithExceed {
 
     private final boolean exceed;
 
-    public MealWithExceed(LocalDateTime dateTime, String description, int calories, int id, boolean exceed) {
-        this.id = getNewId();
+    public MealWithExceed(String id, LocalDateTime dateTime, String description, int calories, boolean exceed) {
+        this.id = id;
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
         this.exceed = exceed;
     }
 
-    public static void resetId(){
-        ID.set(-1);
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -64,7 +58,4 @@ public class MealWithExceed {
         return exceed;
     }
 
-    private int getNewId(){
-        return ID.addAndGet(1);
-    }
 }

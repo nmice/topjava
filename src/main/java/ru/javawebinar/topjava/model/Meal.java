@@ -12,9 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Meal {
 
-    public final static AtomicInteger ID = new AtomicInteger(-1);
-
-    private int id;
+    private String id;
 
     private LocalDateTime dateTime;
 
@@ -23,17 +21,13 @@ public class Meal {
     private int calories;
 
     public Meal(LocalDateTime dateTime, String description, int calories) {
-        this.id = getNewId();
+        this.id = UUID.randomUUID().toString();
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
     }
 
-    public static void resetId() {
-        ID.set(-1);
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -57,11 +51,7 @@ public class Meal {
         return dateTime.toLocalTime();
     }
 
-    private int getNewId(){
-        return ID.addAndGet(1);
-    }
-
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

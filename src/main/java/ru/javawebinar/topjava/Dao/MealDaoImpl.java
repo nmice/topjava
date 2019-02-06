@@ -11,26 +11,26 @@ public class MealDaoImpl implements MealDao<Meal> {
 
     @Override
     public void add(Meal meal) {
-        MealsUtil.mealsMap.put(getAll().size() + 1, meal);
+        MealsUtil.MEALS_BASE.put(meal.getId(), meal);
     }
 
     @Override
-    public Meal getById(int id) {
-        return MealsUtil.mealsMap.get(id);
+    public Meal getById(String id) {
+        return MealsUtil.MEALS_BASE.get(id);
     }
 
     @Override
     public List<Meal> getAll() {
-        return new ArrayList<>(MealsUtil.mealsMap.values());
+        return new ArrayList<>(MealsUtil.MEALS_BASE.values());
     }
 
     @Override
     public void update(Meal meal) {
-        MealsUtil.mealsMap.put(meal.getId(), meal);
+        MealsUtil.MEALS_BASE.put(meal.getId(), meal);
     }
 
     @Override
-    public void delete(int id) {
-        MealsUtil.mealsMap.remove(id);
+    public void delete(String id) {
+        MealsUtil.MEALS_BASE.remove(id);
     }
 }
