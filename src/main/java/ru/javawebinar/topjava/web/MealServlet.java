@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.web;
 
+import ru.javawebinar.topjava.Dao.MealDao;
 import ru.javawebinar.topjava.Dao.MealDaoImpl;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealWithExceed;
@@ -21,16 +22,17 @@ import java.util.List;
  */
 public class MealServlet extends HttpServlet {
     private String id;
-    private boolean add;
-    private MealDaoImpl mealDao = new MealDaoImpl();
+    private boolean isAdding;
+    private MealDao<Meal> mealDao = new MealDaoImpl();
+    public static final String PATTERN = "yyyy-MM-dd HH:mm";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");  // set encoding (only for method Post!)
         try {
-            LocalDateTime localDateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").parse(request.getParameter("date").trim(), LocalDateTime::from);
+            LocalDateTime localDateTime = LocalDateTime.parse(request.getParameter("date").trim(),DateTimeFormatter.ofPattern(PATTERN));
             String description = request.getParameter("description");
             int calories = Integer.parseInt(request.getParameter("calories"));
-            if (add)
+            if (isAdding)
                 mealDao.add(new Meal(localDateTime, description, calories));
             else {
                 Meal meal = mealDao.getById(id);
@@ -53,15 +55,14 @@ public class MealServlet extends HttpServlet {
             if (request.getParameter("del") != null)
                 mealDao.delete(id);
                 MealsUtil.MEALS_BASE.remove(id);
-        }/* else id = -1;*/
+        }
 
-        if (request.getParameter("add") != null)
-            add = true;
-        else add = false;
+        if (request.getParameter("isAdding") != null)
+            isAdding = true;
+        else isAdding = false;
 
-        List<MealWithExceed> mealWithExceeds = MealsUtil.getFilteredWithExceeded(new ArrayList<>(MealsUtil.MEALS_BASE.values()), 2000);
-        request.setAttribute("meals", mealWithExceeds);
-
+        List<MealWithExceed> mealsWithExceed = MealsUtil.getFilteredWithExceeded(new ArrayList<>(MealsUtil.MEALS_BASE.values()), 2000);
+        request.setAttribute("meals", mealsWithExceed);
 
         request.getRequestDispatcher("/meals.jsp").forward(request, response);
     }

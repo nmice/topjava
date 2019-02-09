@@ -8,7 +8,6 @@ import java.util.List;
 
 public class MealDaoImpl implements MealDao<Meal> {
 
-
     @Override
     public void add(Meal meal) {
         MealsUtil.MEALS_BASE.put(meal.getId(), meal);
