@@ -6,6 +6,7 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealWithExceed;
 import ru.javawebinar.topjava.util.MealsUtil;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,24 +22,26 @@ import java.util.List;
  * Date: 19.08.2014
  */
 public class MealServlet extends HttpServlet {
-    private String id;
-    private boolean isAdding;
     private MealDao<Meal> mealDao = new MealDaoImpl();
-    public static final String PATTERN = "yyyy-MM-dd HH:mm";
+    public static final String PATTERN = "yyyy/MM/dd HH:mm";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");  // set encoding (only for method Post!)
         try {
-            LocalDateTime localDateTime = LocalDateTime.parse(request.getParameter("date").trim(),DateTimeFormatter.ofPattern(PATTERN));
-            String description = request.getParameter("description");
-            int calories = Integer.parseInt(request.getParameter("calories"));
-            if (isAdding)
+            if (Boolean.parseBoolean(request.getParameter("add"))) {
+                String description = request.getParameter("description");
+                int calories = Integer.parseInt(request.getParameter("calories"));
+                LocalDateTime localDateTime = null;//LocalDateTime.parse(request.getParameter("date"), DateTimeFormatter.ofPattern(PATTERN));
                 mealDao.add(new Meal(localDateTime, description, calories));
-            else {
-                Meal meal = mealDao.getById(id);
-                meal.setDateTime(localDateTime);
+            }
+            if (Boolean.parseBoolean(request.getParameter("edit"))) {
+                Meal meal = mealDao.getById(request.getParameter("description"));
+                String description = request.getParameter("description");
+                int calories = Integer.parseInt(request.getParameter("calories"));
+                LocalDateTime localDateTime = null;//LocalDateTime.parse(request.getParameter("date"), DateTimeFormatter.ofPattern(PATTERN));
                 meal.setDescription(description);
                 meal.setCalories(calories);
+                meal.setDateTime(localDateTime);
                 mealDao.update(meal);
             }
         } catch (Exception e) {
@@ -51,19 +54,20 @@ public class MealServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         if (request.getParameter("id") != null) {
-            id = request.getParameter("id");
+            String id = request.getParameter("id");
             if (request.getParameter("del") != null)
                 mealDao.delete(id);
-                MealsUtil.MEALS_BASE.remove(id);
+            //MealsUtil.MEALS_BASE.remove(id);
         }
 
-        if (request.getParameter("isAdding") != null)
-            isAdding = true;
-        else isAdding = false;
+        /*if (request.getParameter("add") != null)
+            add = true;
+        else add = false;*/
 
         List<MealWithExceed> mealsWithExceed = MealsUtil.getFilteredWithExceeded(new ArrayList<>(MealsUtil.MEALS_BASE.values()), 2000);
         request.setAttribute("meals", mealsWithExceed);
 
-        request.getRequestDispatcher("/meals.jsp").forward(request, response);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/meals.jsp");
+        requestDispatcher.forward(request, response);
     }
 }

@@ -4,17 +4,19 @@
 <html>
 <head>
     <title>Meals</title>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
 <table>
     <tr>
         <td width="100"><h3><a href="index.html">Home</a></h3></td>
-        <td width="100"><h3><a href="?add=true">Add meal</a></h3></td>
+        <td width="100"><h3><a href="?add=true#shadow">Add meal</a></h3></td>
     </tr>
 </table>
 <hr>
 
-<table>
+<c:if test="${!empty meals}">
+<table class="tg">
     <thead>
     <tr align="left">
         <th width="300">Дата</th>
@@ -46,12 +48,13 @@
                 <td>${meal.getDescription()}</td>
                 <td>${meal.getCalories()}</td>
                     <%-- editing. Add id to url for getting it in method doGet()--%>
-                <td><a href="?id=${meal.getId()}">edit</a></td>
+                <td><a href="?id=${meal.getId()}?edit=true#shadow">edit</a></td>
                     <%-- deleting. Add id to url for getting it in method doGet()--%>
                 <td><a href="?id=${meal.getId()}&del=true">delete</a></td>
             </tr>
         </c:forEach>
     </table>
+</c:if>
 
 
 <%@ include file="form.jsp" %>
