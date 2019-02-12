@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
 <hr>
 <ul>
     <li><a href="users">User List</a></li>
-    <li><a href="meals">Meal List</a></li>
+    <li><a href="mealServlet">Meal List</a></li>
 </ul>
 </body>
 </html>
