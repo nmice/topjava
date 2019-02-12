@@ -19,6 +19,7 @@
             <tr>
                 <td>Date</td>
                 <td><input type="text" name="date"></td>
+                <input type="hidden" name="add" value="true">
             </tr>
             <tr>
                 <td>Description</td>
