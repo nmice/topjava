@@ -8,11 +8,10 @@
 <table>
     <tr>
         <td width="100"><h3><a href="index.jsp">Home</a></h3></td>
-        <td width="100"><h3><a href="form.jsp?add=true">Add meal</a></h3></td>
+        <td width="100"><h3><a href="form.jsp?formtype=add">Add meal</a></h3></td>
     </tr>
 </table>
 <hr>
-
 <c:if test="${!empty mealsWithExceedList}">
 <table>
     <thead>
@@ -46,7 +45,7 @@
                 <td>${meal.getDescription()}</td>
                 <td>${meal.getCalories()}</td>
                     <%-- editing. Add id to url for getting it in method doGet()--%>
-                <td><a href="form.jsp?id=${meal.getId()}&edit=true">edit</a></td>
+                <td><a href="form.jsp?id=${meal.getId()}&formtype=edit">edit</a></td>
                     <%-- deleting. Add id to url for getting it in method doGet()--%>
                 <td><a href="?id=${meal.getId()}&del=true">delete</a></td>
             </tr>
